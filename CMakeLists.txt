@@ -3,13 +3,14 @@ project(Phosphorium)
 
 set(CMAKE_CXX_STANDARD 17)
 
-# Let CEF's own build system fetch the right version automatically
-set(CEF_VERSION "133.4.4+g4feec62+chromium-133.0.6943.142")
+# CEF lives here after fetch_cef.sh runs
+set(CEF_VERSION "144.0.6+g5f7e671+chromium-144.0.7559.59")
+set(CEF_ROOT "${CMAKE_SOURCE_DIR}/cef")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CEF_ROOT}/cmake")
 
-include(FetchContent)
-FetchContent_Declare(
-  cef_cmake
-  GIT_REPOSITORY https://github.com/chromiumembedded/cef-project.git
-  GIT_TAG        master
-)
-FetchContent_MakeAvailable(cef_cmake)
+find_package(CEF REQUIRED)
+add_subdirectory(${CEF_LIBCEF_DLL_WRAPPER_PATH} libcef_dll_wrapper)
+
+add_executable(Phosphorium src/main.cpp)
+target_include_directories(Phosphorium PRIVATE ${CEF_ROOT})
+target_link_libraries(Phosphorium libcef_dll_wrapper ${CEF_LIBRARIES})
