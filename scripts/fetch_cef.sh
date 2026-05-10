@@ -1,8 +1,7 @@
 #!/bin/bash
 set -e
 
-# Download the correct version directly - get this from the official index
-CEF_VERSION="133.4.4+g4feec62+chromium-133.0.6943.142"
+CEF_VERSION="137.0.10+g7e14fe1+chromium-137.0.7151.69"
 PLATFORM="linux64"
 FILENAME="cef_binary_${CEF_VERSION}_${PLATFORM}_minimal.tar.bz2"
 URL="https://cef-builds.spotifycdn.com/${FILENAME}"
