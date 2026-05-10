@@ -5,6 +5,8 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Get the code
@@ -16,7 +18,13 @@ jobs:
           sudo apt-get install -y cmake build-essential libgtk-3-dev
 
       - name: Download CEF
-        run: bash scripts/fetch_cef.sh
+        run: |
+          bash scripts/fetch_cef.sh
+          echo "CEF contents:"
+          ls cef/
+
+      - name: Check CEF cmake folder
+        run: ls cef/cmake/
 
       - name: Configure
         run: cmake -B build
