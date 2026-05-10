@@ -1,18 +1,19 @@
 #!/bin/bash
 set -e
 
-# Get the official CEF project tooling
-git clone --depth 1 https://github.com/chromiumembedded/cef-project.git cef-project
+# Download the correct version directly - get this from the official index
+CEF_VERSION="133.4.4+g4feec62+chromium-133.0.6943.142"
+PLATFORM="linux64"
+FILENAME="cef_binary_${CEF_VERSION}_${PLATFORM}_minimal.tar.bz2"
+URL="https://cef-builds.spotifycdn.com/${FILENAME}"
 
-# Copy its CMake helpers into our project
-cp -r cef-project/cmake ./cmake
+echo "Downloading CEF from: $URL"
+curl -L --fail --show-error "$URL" -o cef.tar.bz2
 
-# Use its download script to fetch CEF binaries
-cd cef-project
-python3 tools/automate/automate-git.py \
-  --download-dir=../cef \
-  --no-build \
-  --force-clean
+echo "Extracting..."
+mkdir -p cef
+tar -xj --strip-components=1 -C cef -f cef.tar.bz2
+rm cef.tar.bz2
 
 echo "Done! CEF contents:"
-ls ../cef/
+ls cef/
