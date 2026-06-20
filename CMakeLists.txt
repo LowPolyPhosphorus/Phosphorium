@@ -9,15 +9,16 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CEF_ROOT}/cmake")
 find_package(CEF REQUIRED)
 add_subdirectory(${CEF_LIBCEF_DLL_WRAPPER_PATH} libcef_dll_wrapper)
 
-# Define libcef.so as an imported target since CEF's CMake doesn't always do this for us
+find_package(SDL2 REQUIRED)
+
 add_library(libcef SHARED IMPORTED)
 set_target_properties(libcef PROPERTIES
   IMPORTED_LOCATION "${CEF_ROOT}/Release/libcef.so"
 )
 
 add_executable(Phosphorium src/main.cpp)
-target_include_directories(Phosphorium PRIVATE ${CEF_ROOT})
-target_link_libraries(Phosphorium libcef_dll_wrapper libcef ${CEF_STANDARD_LIBS})
+target_include_directories(Phosphorium PRIVATE ${CEF_ROOT} ${SDL2_INCLUDE_DIRS})
+target_link_libraries(Phosphorium libcef_dll_wrapper libcef ${CEF_STANDARD_LIBS} ${SDL2_LIBRARIES})
 
 set_target_properties(Phosphorium PROPERTIES
   BUILD_RPATH "${CEF_ROOT}/Release"
